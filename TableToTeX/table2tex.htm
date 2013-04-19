@@ -8,6 +8,63 @@
         function exists(elem) {
             return $("." + elem).length != 0;
         }
+
+        function createCode() {
+            return function () {
+                var srcTex = "%%% Don't forget to write \\usepackage{multirow} %%%\n\n";
+
+                srcTex += "\\begin{table}[h]\n";
+                srcTex += "\\begin{center}\n";
+                if ($("input[name='radCaptionPos']:checked").val() == "1") {
+                    srcTex += "\\caption{" + txtCaption.value + "}\n";
+                }
+                srcTex += "\\begin{tabular}{";
+                for (var i = 0; i < txtColsOpt.value; i++) {
+                    srcTex += "c";
+                }
+                srcTex += "}\n";
+
+                for (var i = 1; i <= txtRowsOpt.value; i++) {
+                    for (var j = 1; j <= txtColsOpt.value; j++) {
+                        var cell = "input[name=_td" + i.toString() + "_" + j.toString() + "]";
+                        srcTex += ($(cell).val() == "" ? " ~ " : $(cell).val()) + (j != txtColsOpt.value ? " & " : " \\\\ ");
+                    }
+                    srcTex += "\n";
+                }
+
+                srcTex += "\\end{tabular}\n";
+                if ($("input[name='radCaptionPos']:checked").val() == "2") {
+                    srcTex += "\\caption{" + txtCaption.value + "}\n";
+                }
+                srcTex += "\\end{center}\n";
+                srcTex += "\\end{table}\n";
+
+
+                if (chkCode.checked) {
+                    // I wonder why jQuery returns 404 error.
+                    // It doesn't include any errors.
+                    $.ajax({
+                        url: "http://hilite.me:80/api",
+                        data: {
+                            lexer: "tex",
+                            style: "default",
+                            code: srcTex
+                        },
+                        type: "post",
+                        dataType: "text",
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert('status:' + XMLHttpRequest.status + ', status text: ' + XMLHttpRequest.statusText);
+                        },
+                        success: function (data) {
+                            $(".show-code").empty().html(data);
+                        }
+                    });
+                }
+                else {
+                    $(".show-code").empty().append("<pre><code>\n" + srcTex + "\n</code></pre>");
+                }
+            }
+        }
     </script>
 </head>
 <body>
@@ -31,6 +88,7 @@
                         <li>Rows: <input type="text" name="txtRowsOpt" value="" size="5" /></li>
                         <li>Cols: <input type="text" name="txtColsOpt" value="" size="5" /></li>
                         <li>Caption: <input type="radio" name="radCaptionPos" title="None" value="0" checked="checked"/>None <input type="radio" name="radCaptionPos" title="Top" value="1"/>Top <input type="radio" name="radCaptionPos" title="Bottom" value="2"/>Bottom</li>
+                        <li><input type="checkbox" name="chkCode" disabled="disabled"/> Colorful</li>
                     </ul>
                 </div>
             </div>
@@ -92,12 +150,18 @@
                                 break;
                             $("." + trName).hide();
                         }
+
+                        $("input").change(createCode());
                     });
                 </script>
             </div>
 
             <div class="show-code">
             </div>
+        </div>
+
+        <div class="footer">
+            Copyright (C) Yoon project, 2013.
         </div>
     </div>
 </body>

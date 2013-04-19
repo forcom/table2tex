@@ -72,3 +72,15 @@
         border-style: solid;
         border-width: 1px;
     }
+
+.show-code {
+    background-color: #CCFFFF;
+    overflow: scroll;
+    color: #000000;
+}
+
+.footer {
+    font-size: small;
+    color: #FFFFFF;
+    text-align: right;
+}
