@@ -3,22 +3,102 @@
 <head>
     <title>TableToTeX - by SeungYong, Yoon</title>
     <link href="style.css" rel="stylesheet" />
+    <script src="./jquery-2.0.0.js"></script>
+    <script>
+        function exists(elem) {
+            return $("." + elem).length != 0;
+        }
+    </script>
 </head>
 <body>
-    <div class="header">
-        <div class="header-title">
+    <div class="body">
+        <div class="header">
+            <div class="header-title">
+                Table2TeX
+            </div>
+            <div class="header-desc">
+                ... cause TeX table makes you crazy
+            </div>
         </div>
-        <div class="header-desc">
+
+        <div class="content">
+            <div class="menu">
+                <div class="menu-title">
+                    <h4>Settings</h4>
+                </div>
+                <div class="menu-option">
+                    <ul>
+                        <li>Rows: <input type="text" name="txtRowsOpt" value="" size="5" /></li>
+                        <li>Cols: <input type="text" name="txtColsOpt" value="" size="5" /></li>
+                        <li>Caption: <input type="radio" name="radCaptionPos" title="None" value="0" checked="checked"/>None <input type="radio" name="radCaptionPos" title="Top" value="1"/>Top <input type="radio" name="radCaptionPos" title="Bottom" value="2"/>Bottom</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="edit-table">
+                <div class="table-caption" style="display: none;">
+                    Table #: <input type="text" name="txtCaption" value="" />
+                </div>
+
+                <table>
+                </table>
+
+                <script>
+                    $(radCaptionPos).change(function () {
+                        switch ($("input[name='radCaptionPos']:checked").val()) {
+                            case "0":
+                                $(".table-caption").hide();
+                                break;
+                            case "1":
+                                $(".table-caption").insertBefore($("table")).show();
+                                break;
+                            case "2":
+                                $(".table-caption").insertAfter($("table")).show();
+                                break;
+                            default:
+                                break;
+                        }
+                    });
+
+                    $("input[name$='Opt']").change(function () {
+                        for (var i = 1; i <= txtRowsOpt.value; i++) {
+                            var trName = "tr" + i.toString();
+                            if (!exists(trName)) {
+                                $("table").append('<tr class="' + trName + '"></tr>');
+                            }
+                            trName = "." + trName;
+
+                            for (var j = 1; j <= txtColsOpt.value; j++) {
+                                var tdName = "td" + i.toString() + "_" + j.toString();
+                                if (!exists(tdName)) {
+                                    $(trName).append('<td class="' + tdName + '"><input type="text" size="5" value="" name="_' + tdName + '" /></td>');
+                                }
+                                $("." + tdName).show();
+                            }
+
+                            for (var j = parseInt(txtColsOpt.value) + 1; ; j++) {
+                                var tdName = "td" + i.toString() + "_" + j.toString();
+                                if (!exists(tdName))
+                                    break;
+                                $("." + tdName).hide();
+                            }
+
+                            $(trName).show();
+                        }
+
+                        for (var i = parseInt(txtRowsOpt.value) + 1; ; i++) {
+                            var trName = "tr" + i.toString();
+                            if (!exists(trName))
+                                break;
+                            $("." + trName).hide();
+                        }
+                    });
+                </script>
+            </div>
+
+            <div class="show-code">
+            </div>
         </div>
-    </div>
-
-    <div class="menu">
-    </div>
-
-    <div class="edit-table">
-    </div>
-
-    <div class="show-code">
     </div>
 </body>
 </html>

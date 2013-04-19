@@ -9,3 +9,66 @@
 .header {
     background-color: #99CCFF;
 }
+
+.header-title {
+    padding: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #000000;
+    font-size: x-large;
+}
+
+.header-desc {
+    padding-left: 50px;
+    background-color: #FFFFFF;
+    font-style: oblique;
+    font-size: small;
+    font-weight: lighter;
+    color: #666666;
+}
+
+.content {
+    background-color: #333333;
+    padding: 5px;
+}
+
+.menu {
+    border-style: double;
+    border-width: thin;
+    background-color: #FFFFCC;
+    padding: 10px;
+}
+
+    .menu-title h4 {
+        margin: 0;
+    }
+
+.menu-option {
+    display: inline-block;
+}
+
+    .menu-option ul li {
+        list-style-type: none;
+        float: left;
+        margin-left: 20px;
+    }
+
+    .menu-option ul li input[type="text"] {
+        border-style: solid;
+        border-width: 1px;
+    }
+
+    .menu-option ul li a {
+    font-size: small;
+}
+
+.edit-table {
+    margin: 1px;
+    background-color: #FFFFFF;
+    overflow: scroll;
+}
+
+    .edit-table input {
+        border-style: solid;
+        border-width: 1px;
+    }
